@@ -4,26 +4,23 @@ on: [push]
 # branches: [main]
 # https://github.com/actions/setup-java
 jobs:
-    Explore-GitHub-Actions:
-      runs-on: ubuntu-latest # use fixed version
-      steps:
-        # - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-        # - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-        # - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-        # - name: Check out repository code
-          uses: actions/checkout@v4 # public actions
-        # - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-        # - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest # use fixed version
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: | # Pipe for multiple lines, better: shell files instead of multiple lines
+          ls ${{ github.workspace }}
 
-        - name: List files in the repository
-        - run: | # Pipe for multiple lines, better: shell files instead of multiple lines
-              ls ${{ github.workspace }}
-              steps:
-        - uses: actions/setup-java@v3
-          with:
-            distribution: 'temurin'
-            java-version: '17'
-        - run: |
-            jave -version
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '17'
+          cache: 'maven'
+      - run: |
+          java -version
 
-            # - run: echo "🍏 This job's status is ${{ job.status }}.
+      - run: |
+          pwd
+          ls -l
+          ./mvnw -B compile package
